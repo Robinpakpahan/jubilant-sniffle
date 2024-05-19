@@ -1,0 +1,51 @@
+#include <iostream>
+
+class Stack {
+private:
+  int *items;
+  int top;
+  int max_size;
+
+public:
+  Stack(int size) {
+    max_size = size;
+    items = new int[max_size];
+    top = -1;
+  }
+
+  ~Stack() {
+    delete[] items;
+  }
+
+  void push(int item) {
+    if (is_full()) {
+      std::cout << "Stack overflow!" << std::endl;
+      return;
+    }
+    items[++top] = item;
+  }
+
+  int pop() {
+    if (is_empty()) {
+      std::cout << "Stack underflow!" << std::endl;
+      return -1;
+    }
+    return items[top--];
+  }
+
+  bool is_empty() {
+    return top == -1;
+  }
+
+  bool is_full() {
+    return top == max_size - 1;
+  }
+
+  int peek() {
+    if (is_empty()) {
+      std::cout << "Stack is empty!" << std::endl;
+      return -1;
+    }
+    return items[top];
+  }
+};
