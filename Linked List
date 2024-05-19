@@ -1,82 +1,97 @@
 #include <iostream>
+using namespace std;
 
 struct Node {
-  int data;
-  Node* next;
+    int data;
+    Node* next;
 };
 
-class LinkedList {
-private:
-  Node* head;
+// Fungsi untuk menambahkan node di awal linked list
+void insertAtBeginning(Node** headRef, int newData) {
+    Node* newNode = new Node();
+    newNode->data = newData;
+    newNode->next = *headRef;
+    *headRef = newNode;
+}
 
-public:
-  LinkedList() {
-    head = nullptr;
-  }
+// Fungsi untuk menghapus node dengan nilai tertentu dari linked list
+void deleteNode(Node** headRef, int key) {
+    Node* temp = *headRef;
+    Node* prev = nullptr;
 
-  void insert_at_beginning(int data) {
-    Node* new_node = new Node;
-    new_node->data = data;
-    new_node->next = head;
-    head = new_node;
-  }
-
-  void insert_at_end(int data) {
-    Node* new_node = new Node;
-    new_node->data = data;
-    new_node->next = nullptr;
-
-    if (head == nullptr) {
-      head = new_node;
-      return;
+    if (temp != nullptr && temp->data == key) {
+        *headRef = temp->next;
+        delete temp;
+        return;
     }
 
-    Node* current = head;
-    while (current->next) {
-      current = current->next;
-    }
-    current->next = new_node;
-  }
-
-  void delete_at_beginning() {
-    if (head == nullptr) {
-      std::cout << "Linked list is empty!" << std::endl;
-      return;
+    while (temp != nullptr && temp->data != key) {
+        prev = temp;
+        temp = temp->next;
     }
 
-    Node* temp = head;
-    head = head->next;
+    if (temp == nullptr) return;
+
+    prev->next = temp->next;
     delete temp;
-  }
+}
 
-  void delete_at_end() {
-    if (head == nullptr) {
-      std::cout << "Linked list is empty!" << std::endl;
-      return;
+// Fungsi untuk menampilkan linked list
+void displayList(Node* node) {
+    while (node != nullptr) {
+        cout << node->data << " ";
+        node = node->next;
     }
+    cout << endl;
+}
 
-    if (head->next == nullptr) {
-      delete head;
-      head = nullptr;
-      return;
-    }
-
+// Fungsi untuk mencari node dengan nilai tertentu dalam linked list
+bool search(Node* head, int key) {
     Node* current = head;
-    Node* previous = nullptr;
-    while (current->next) {
-      previous = current;
-      current = current->next;
+    while (current != nullptr) {
+        if (current->data == key) return true;
+        current = current->next;
     }
-    previous->next = nullptr;
-    delete current;
-  }
+    return false;
+}
 
-  void print_list() {
-    Node* current = head;
-    while (current) {
-      std::cout << current->data << " ";
-      current = current->next;
+// Fungsi untuk membalik urutan linked list
+void reverse(Node** headRef) {
+    Node* prev = nullptr;
+    Node* current = *headRef;
+    Node* nextNode = nullptr;
+
+    while (current != nullptr) {
+        nextNode = current->next;
+        current->next = prev;
+        prev = current;
+        current = nextNode;
     }
-    std::cout << std::endl;
-  }
-};
+    *headRef = prev;
+}
+
+int main() {
+    Node* head = nullptr;
+
+    // Penyisipan di awal linked list
+    insertAtBeginning(&head, 10);
+    insertAtBeginning(&head, 20);
+    insertAtBeginning(&head, 30);
+    displayList(head); // Menampilkan linked list
+
+    // Penghapusan node dengan nilai tertentu
+    deleteNode(&head, 20);
+    displayList(head);
+
+    // Pencarian node dengan nilai tertentu
+    cout << "Elemen 30 ditemukan? " << (search(head, 30) ? "Ya" : "Tidak") << endl;
+
+    // Pembalikan urutan linked list
+    reverse(&head);
+    displayList(head);
+
+    return 0;
+}
+
+Robin Charles Pakpahan
+202332139
