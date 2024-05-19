@@ -1,51 +1,45 @@
 #include <iostream>
+#include <vector>
+
+using namespace std;
+int main;
 
 class Stack {
 private:
-  int *items;
-  int top;
-  int max_size;
+    std::vector<int> items;
 
 public:
-  Stack(int size) {
-    max_size = size;
-    items = new int[max_size];
-    top = -1;
-  }
-
-  ~Stack() {
-    delete[] items;
-  }
-
-  void push(int item) {
-    if (is_full()) {
-      std::cout << "Stack overflow!" << std::endl;
-      return;
+    void push(int item) {
+        items.push_back(item);
     }
-    items[++top] = item;
-  }
 
-  int pop() {
-    if (is_empty()) {
-      std::cout << "Stack underflow!" << std::endl;
-      return -1;
+    int pop() {
+        if (is_empty()) {
+            throw std::runtime_error("Stack is empty");
+        }
+        int topItem = items.back();
+        items.pop_back();
+        return topItem;
     }
-    return items[top--];
-  }
 
-  bool is_empty() {
-    return top == -1;
-  }
-
-  bool is_full() {
-    return top == max_size - 1;
-  }
-
-  int peek() {
-    if (is_empty()) {
-      std::cout << "Stack is empty!" << std::endl;
-      return -1;
+    bool is_empty() {
+        return items.empty();
     }
-    return items[top];
-  }
+
+    int size() {
+        return items.size();
+    }
 };
+
+int main() {
+    Stack stack;
+    stack.push(10);
+    stack.push(20);
+    stack.push(30);
+
+    std::cout << stack.pop() << std::endl;  // Output: 30
+    std::cout << stack.pop() << std::endl;  // Output: 20
+    std::cout << stack.size() << std::endl; // Output: 1
+
+    return 0;
+}
